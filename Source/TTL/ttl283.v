@@ -1,5 +1,5 @@
 //
-//  74LS83 - 4-bit binary full adder with fast carry.
+//  74LS283 - 4-bit binary full adder with fast carry.
 //
 module ttl283_adder 
 #(PROPAGATION_DELAY = 24, RISE_TIME = 1, FALL_TIME = 1)
