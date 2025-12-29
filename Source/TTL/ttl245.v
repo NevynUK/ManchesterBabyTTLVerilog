@@ -25,14 +25,18 @@ module ttl245_transceiver
     assign A = ((OE_n == 1'b0) && (DIR == 1'b0)) ? A_out : 8'bz;
     assign B = ((OE_n == 1'b0) && (DIR == 1'b1)) ? B_out : 8'bz;
     
-    always @(A or B or DIR or OE_n) begin
+    always @(A or B or DIR or OE_n)
+    begin
         if (OE_n == 1'b0) begin
-            if (DIR == 1'b1) begin
+            if (DIR == 1'b1)
+            begin
                 #PROPAGATION_DELAY B_out <= A;
-            end else begin
+            end else
+            begin
                 #PROPAGATION_DELAY A_out <= B;
             end
-        end else begin
+        end else
+        begin
             #(PROPAGATION_DELAY)
             A_out <= 8'bz;
             B_out <= 8'bz;
