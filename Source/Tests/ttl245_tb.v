@@ -46,7 +46,6 @@ module ttl245_tb();
         OE_n = 1'b1;                // Outputs disabled.
         A_enable = 1'b0;
         B_enable = 1'b0;
-        #PROPAGATION_DELAY;
 
         //
         //  Test 1: A to B direction (DIR = 1).
