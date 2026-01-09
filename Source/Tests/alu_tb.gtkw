@@ -1,0 +1,28 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Fri Jan  9 09:19:24 2026
+[*]
+[dumpfile] "/Users/markstevens/GitHub/Personal/ManchesterBabyTTLVerilog/Source/_build/default/Tests/alu_tb.vcd"
+[dumpfile_mtime] "Fri Jan  9 09:18:09 2026"
+[dumpfile_size] 22301
+[savefile] "/Users/markstevens/GitHub/Personal/ManchesterBabyTTLVerilog/Source/Tests/alu_tb.gtkw"
+[timestart] 0
+[size] 2016 616
+[pos] -1 -1
+*-18.515888 847000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] alu_tb.
+[sst_width] 253
+[signals_width] 241
+[sst_expanded] 1
+[sst_vpaned_height] 164
+@23
+alu_tb.A[31:0]
+@22
+alu_tb.B[31:0]
+@28
+alu_tb.OE_n
+alu_tb.SUB
+@22
+alu_tb.RESULT[31:0]
+[pattern_trace] 1
+[pattern_trace] 0
