@@ -28,7 +28,7 @@ module ttl191_tb();
         .RCO_n(RCO_n)
     );
 
-    localparam PROPAGATION_DELAY = 50;      //  Delay to allow for propagation with some overhead.
+    localparam PROPAGATION_DELAY = 30;      //  Delay to allow for propagation with some overhead.
     localparam CLOCK_PERIOD = 100;          //  Clock period for testing.
 
     //
@@ -61,7 +61,7 @@ module ttl191_tb();
         //
         D = 4'b0101;                //  Load value 5.
         LOAD_n = 1'b0;              //  Enable load.
-        @(posedge CLK);
+        #PROPAGATION_DELAY;
         LOAD_n = 1'b1;              //  Disable load.
         #PROPAGATION_DELAY;
         if (Q !== 4'b0101)
@@ -115,13 +115,12 @@ module ttl191_tb();
         //
         D = 4'b1101;                //  Load value 13.
         LOAD_n = 1'b0;              //  Enable load.
-        @(posedge CLK);
         #PROPAGATION_DELAY;
+        LOAD_n = 1'b1;              //  Disable load.
         if (Q !== 4'b1101)
         begin
             $display("ERROR: Test 3 - Load failed. Expected Q=1101, got Q=%b", Q);
         end
-        LOAD_n = 1'b1;              //  Disable load.
         
         @(posedge CLK);
         #PROPAGATION_DELAY;
@@ -156,13 +155,12 @@ module ttl191_tb();
         //
         D = 4'b0101;                //  Load value 5.
         LOAD_n = 1'b0;              //  Enable load.
-        @(posedge CLK);
         #PROPAGATION_DELAY;
+        LOAD_n = 1'b1;              //  Disable load.
         if (Q !== 4'b0101)
         begin
             $display("ERROR: Test 4 - Load failed. Expected Q=0101, got Q=%b", Q);
         end
-        LOAD_n = 1'b1;              //  Disable load.
         DOWN_UP_n = 1'b1;           //  Count down.
         
         @(posedge CLK);
@@ -205,13 +203,12 @@ module ttl191_tb();
         //
         D = 4'b0010;                //  Load value 2.
         LOAD_n = 1'b0;              //  Enable load.
-        @(posedge CLK);
         #PROPAGATION_DELAY;
+        LOAD_n = 1'b1;              //  Disable load.
         if (Q !== 4'b0010)
         begin
             $display("ERROR: Test 5 - Load failed. Expected Q=0010, got Q=%b", Q);
         end
-        LOAD_n = 1'b1;              //  Disable load.
         
         @(posedge CLK);
         #PROPAGATION_DELAY;
@@ -246,13 +243,12 @@ module ttl191_tb();
         //
         D = 4'b1000;                //  Load value 8.
         LOAD_n = 1'b0;              //  Enable load.
-        @(posedge CLK);
         #PROPAGATION_DELAY;
+        LOAD_n = 1'b1;              //  Disable load.
         if (Q !== 4'b1000)
         begin
             $display("ERROR: Test 6 - Load failed. Expected Q=1000, got Q=%b", Q);
         end
-        LOAD_n = 1'b1;              //  Disable load.
         CTEN_n = 1'b1;              //  Disable counting.
         
         @(posedge CLK);

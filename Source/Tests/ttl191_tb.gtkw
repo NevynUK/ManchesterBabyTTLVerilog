@@ -1,0 +1,28 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Sat Jan 10 10:04:35 2026
+[*]
+[dumpfile] "/Users/markstevens/GitHub/Personal/ManchesterBabyTTLVerilog/Source/_build/default/Tests/ttl191_tb.vcd"
+[dumpfile_mtime] "Sat Jan 10 10:03:41 2026"
+[dumpfile_size] 2706
+[savefile] "/Users/markstevens/GitHub/Personal/ManchesterBabyTTLVerilog/Source/Tests/ttl191_tb.gtkw"
+[timestart] 0
+[size] 2560 676
+[pos] -1 -1
+*-18.151056 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 253
+[signals_width] 249
+[sst_expanded] 1
+[sst_vpaned_height] 185
+@22
+ttl191_tb.D[3:0]
+@28
+ttl191_tb.LOAD_n
+ttl191_tb.CTEN_n
+ttl191_tb.CLK
+@29
+ttl191_tb.DOWN_UP_n
+@22
+ttl191_tb.Q[3:0]
+[pattern_trace] 1
+[pattern_trace] 0

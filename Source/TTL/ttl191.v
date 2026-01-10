@@ -2,7 +2,7 @@
 //  74LS191 - Synchronous 4-bit up/down binary counter with mode control.
 //
 module ttl191_counter 
-#(PROPAGATION_DELAY = 32, RISE_TIME = 1, FALL_TIME = 1)
+#(PROPAGATION_DELAY = 22, RISE_TIME = 1, FALL_TIME = 1)
 (
     input wire [3:0] D,     //  4-bit parallel data input.
     input wire CLK,         //  Clock input (active rising edge).
@@ -28,38 +28,42 @@ module ttl191_counter
     //  DOWN_UP_n: 0 = count up, 1 = count down.
     //  RCO_n: LOW when at terminal count (15 for up, 0 for down) and CTEN_n is LOW.
     //
-    initial
+    // initial
+    // begin
+    //     count = 4'b0000;
+    //     Q = 4'b0000;
+    //     RCO_n = 1'b1;
+    // end
+
+    //
+    //  Data sheet states that the load operation does not need a clock edge and it overrides the counting operation.
+    //
+    always @(negedge LOAD_n)
     begin
-        count = 4'b0000;
-        Q = 4'b0000;
-        RCO_n = 1'b1;
+        count <= D;
     end
 
     always @(posedge CLK) begin
-        if (LOAD_n == 1'b0)
+        if (LOAD_n != 1'b0)                 //  Only count if not loading.
         begin
-            #PROPAGATION_DELAY
-            count <= D;
-        end else if (CTEN_n == 1'b0)
-        begin
-            if (DOWN_UP_n == 1'b0) 
+            if (CTEN_n == 1'b0)
             begin
-                #PROPAGATION_DELAY
-                count <= count + 1;
-            end else 
-            begin
-                #PROPAGATION_DELAY
-                count <= count - 1;
+                if (DOWN_UP_n == 1'b0) 
+                begin
+                    count <= count + 1;
+                end else 
+                begin
+                     count <= count - 1;
+                end
             end
         end
-        //  If LOAD_n=1 and CTEN_n=1, hold current count (no change).
     end
     //
     //  Output assignment
     //
     always @(count)
     begin
-        Q <= count;
+        #PROPAGATION_DELAY Q <= count;
     end
     //
     //  Terminal count detection (internal).
