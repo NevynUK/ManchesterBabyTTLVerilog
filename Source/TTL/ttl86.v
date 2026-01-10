@@ -2,7 +2,7 @@
 //  74LS86 - Quad 2-input XOR gate.
 //
 module ttl86_xor 
-#(PROPAGATION_DELAY = 15, RISE_TIME = 1, FALL_TIME = 1)
+#(PROPAGATION_DELAY = 23, RISE_TIME = 1, FALL_TIME = 1)
 (
     input wire A1,          // Gate 1 input A.
     input wire B1,          // Gate 1 input B.
