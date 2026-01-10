@@ -6,7 +6,7 @@ module ttl245_transceiver
 (
     inout wire [7:0] A,    // 8-bit bidirectional bus A.
     inout wire [7:0] B,    // 8-bit bidirectional bus B.
-    input wire DIR,        // Direction control: 0=B to A, 1=A to B.
+    input wire DIR,        // Direction control: 0 = B to A, 1 = A to B.
     input wire OE_n        // Output Enable (active low, tri-state when high).
 );
     //
@@ -27,7 +27,8 @@ module ttl245_transceiver
     
     always @(A or B or DIR or OE_n)
     begin
-        if (OE_n == 1'b0) begin
+        if (OE_n == 1'b0)
+        begin
             if (DIR == 1'b1)
             begin
                 #PROPAGATION_DELAY B_out <= A;
