@@ -21,12 +21,12 @@ module ttl373_tb();
 
     localparam PROPAGATION_DELAY = 50;     // Delay to allow for propagation with some overhead.
 
-    initial 
+    initial
     begin
         $dumpvars(0, ttl373_tb);
     end
 
-    initial 
+    initial
     begin
         //
         //  Setup the test values.
@@ -40,22 +40,29 @@ module ttl373_tb();
         //  Start the tests.
         //
         D = 8'b10101010;
-        LE = 1'b1;                  // Enable latch, should follow D.
+        LE = 1'b1;                  // Latch the data, Output is disabled and should be High-Z.
         #PROPAGATION_DELAY;
-        if (Q != D) 
+        if (Q !== 8'bzzzzzzz)
         begin
-            $error("Error: Test 1, Q did not match expected value after LE enabled!");
+            $error("Error: Test 1a, Output Q did not go High-Z after LE enabled!");
+        end
+        if (uut.internal_latch !== 8'b10101010)
+        begin
+            $error("Error: Test 1b, internal latch did not match expected value after LE enabled!");
         end
 
-        LE = 1'b0;                  // Disable latch, should hold value.
+        LE = 1'b0;                  // Latch the data, should hold value in the latch and Q should be High-Z.
         #PROPAGATION_DELAY;
-        if (Q != 8'b10101010)
+        if (Q !== 8'bzzzzzzzz)
         begin
-            $error("Error: Test 2, Q did not hold expected value after LE disabled!");
+            $error("Error: Test 2a, Output Q did not go High-Z after LE disabled!");
+        end
+        if (uut.internal_latch !== 8'b10101010)
+        begin
+            $error("Error: Test 2b, internal latch did not hold expected value after LE disabled!");
         end
 
         OE_n = 1'b0;                // Enable output, Q should reflect latched value.
-
         D = 8'b11110000;            // Change D, should not affect Q.
         #PROPAGATION_DELAY;
         if (Q != 8'b10101010)
@@ -65,20 +72,25 @@ module ttl373_tb();
 
         OE_n = 1'b1;                // Disable output, Q should go high-impedance.
         #PROPAGATION_DELAY;
-        if (Q !== 8'bz)
+        if (Q !== 8'bzzzzzzzz)
         begin
             $error("Error: Test 4, Q not in high-impedance state after OE_n enabled!");
         end
-
-        LE = 1'b1;                  // Enable latch again, should follow D.
-        #PROPAGATION_DELAY;
-        if (Q != D)
+        if (uut.internal_latch !== 8'b10101010)
         begin
-            $error("Error: Test 5, Q did not match expected value after LE re-enabled!");
+            $error("Error: Test 4b, internal latch did not hold expected value after OE_n enabled!");
         end
 
+        LE = 1'b1;                  // Output is disabled, latching disabled.
         #PROPAGATION_DELAY;
-        OE_n = 1'b0;                // Enable output, Q should reflect new latched value.
+        if (Q !== 8'bzzzzzzzz)
+        begin
+            $error("Error: Test 5a, Output Q did not go High-Z after LE re-enabled!");
+        end
+        if (uut.internal_latch !== 8'b11110000)
+        begin
+            $error("Error: Test 5b, internal latch did not match expected value after LE re-enabled!");
+        end
 
         $display("74LS373 - End of Simulation");
         $finish;

@@ -2,7 +2,7 @@
 //  74LS283 - 4-bit binary full adder with fast carry.
 //
 module ttl283_adder 
-#(PROPAGATION_DELAY = 24, RISE_TIME = 1, FALL_TIME = 1)
+#(PROPAGATION_DELAY = 315, RISE_TIME = 1, FALL_TIME = 1)
 (
     input wire [3:0] A,     // 4-bit input A.
     input wire [3:0] B,     // 4-bit input B.

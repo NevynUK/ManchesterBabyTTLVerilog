@@ -2,7 +2,7 @@
 //  74LS373 - Octal D-type transparent latch with 3-state outputs.
 //
 module ttl373_latch
-#(PROPAGATION_DELAY = 12, RISE_TIME = 1, FALL_TIME = 1)
+#(PROPAGATION_DELAY = 36, RISE_TIME = 1, FALL_TIME = 1)
 (
     input wire [7:0] D,     // 8-bit Data Input.
     input wire LE,          // Latch Enable (active high, transparent when high).
@@ -44,15 +44,13 @@ module ttl373_latch
             //
             //  Output enabled: drive Q with the latched value.
             //
-            #PROPAGATION_DELAY
-            Q <= internal_latch;
+            #PROPAGATION_DELAY Q <= internal_latch;
         end else
         begin
             //
             //  Output disabled: high-impedance state ('z').
             //
-            #(PROPAGATION_DELAY)
-            Q <= 8'bz;
+            #(PROPAGATION_DELAY) Q <= 8'bz;
         end
     end
 
