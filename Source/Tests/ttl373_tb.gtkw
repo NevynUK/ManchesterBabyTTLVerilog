@@ -1,0 +1,35 @@
+[*]
+[*] GTKWave Analyzer v3.4.0 (w)1999-2022 BSI
+[*] Sat Jan 10 17:16:37 2026
+[*]
+[dumpfile] "/Users/markstevens/GitHub/Personal/ManchesterBabyTTLVerilog/Source/_build/default/Tests/ttl373_tb.vcd"
+[dumpfile_mtime] "Sat Jan 10 16:44:55 2026"
+[dumpfile_size] 912
+[savefile] "/Users/markstevens/GitHub/Personal/ManchesterBabyTTLVerilog/Source/Tests/ttl373_tb.gtkw"
+[timestart] 0
+[size] 2016 616
+[pos] -1 -1
+*-15.290606 15700 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] ttl373_tb.
+[sst_width] 253
+[signals_width] 238
+[sst_expanded] 1
+[sst_vpaned_height] 164
+@22
+ttl373_tb.D[7:0]
+@28
+ttl373_tb.LE
+ttl373_tb.OE_n
+@22
+ttl373_tb.Q[7:0]
+@201
+-UUT
+@22
+ttl373_tb.uut.D[7:0]
+ttl373_tb.uut.Q[7:0]
+ttl373_tb.uut.internal_latch[7:0]
+@28
+ttl373_tb.uut.OE_n
+ttl373_tb.uut.LE
+[pattern_trace] 1
+[pattern_trace] 0
