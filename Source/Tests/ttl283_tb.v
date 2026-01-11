@@ -23,7 +23,7 @@ module ttl283_tb();
         .C4(C4)
     );
 
-    localparam PROPAGATION_DELAY = 50;     // Delay to allow for propagation with some overhead.
+    localparam PROPAGATION_DELAY = 500;     // Delay to allow for propagation with some overhead.
 
     initial begin
         $dumpvars(0, ttl283_tb);
