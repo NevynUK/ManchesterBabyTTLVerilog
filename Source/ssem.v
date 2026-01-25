@@ -22,34 +22,33 @@
 //
 module ssem
 (
-    input wire clk,                 // Clock signal
-    input wire reset_n,            // Active low reset signal
-    input wire load_A,             // Load enable for register A
-    input wire load_B,             // Load enable for register B
-    input wire a_to_bus,           // Output register A to the bus
-    input wire b_to_bus,           // Output register B to the bus
-    input wire alu_sub,            // ALU subtract control (0=add, 1=subtract)
-    input wire alu_latch,          // ALU latch enable (active high)
-    input wire alu_to_bus,         // ALU output to the bus
-    inout wire [31:0] bus          // 32-bit bidirectional bus
+    input wire clk,                 //  Clock signal
+    input wire reset_n,             //  Active low reset signal
+    input wire load_A,              //  Load enable for register A
+    input wire load_B,              //  Load enable for register B
+    input wire a_to_bus,            //  Output register A to the bus
+    input wire b_to_bus,            //  Output register B to the bus
+    input wire alu_sub,             //  ALU subtract control (0=add, 1=subtract)
+    input wire alu_latch,           //  ALU latch enable (active high)
+    input wire alu_to_bus,          //  ALU output to the bus
+    inout wire [31:0] bus           //  32-bit bidirectional bus
 );
     //
     //  Internal signals
     //
-    wire [31:0] A_to_alu;          // Output from register A to ALU
-    wire [31:0] B_to_alu;          // Output from register B to ALU
-    wire [31:0] A_Q;               // Output from register A to bus
-    wire [31:0] B_Q;               // Output from register B to bus
-    wire [31:0] alu_result;        // Result from ALU
-
+    wire [31:0] A_to_alu;           //  Output from register A to ALU
+    wire [31:0] B_to_alu;           //  Output from register B to ALU
+    wire [31:0] A_Q;                //  Output from register A to bus
+    wire [31:0] B_Q;                //  Output from register B to bus
+    wire [31:0] alu_result;         //  Result from ALU
     //
     //  Register A
     //
     register reg_A (
         .A(bus),
         .LE(load_A),
-        .OE_n(~a_to_bus),          // Output to bus when a_to_bus is high (active low OE_n)
-        .Q(A_Q),                    // Output to bus
+        .OE_n(~a_to_bus),           //  Output to bus when a_to_bus is high (active low OE_n)
+        .Q(A_Q),                    //  Output to bus
         .to_alu(A_to_alu)
     );
 
@@ -59,8 +58,8 @@ module ssem
     register reg_B (
         .A(bus),
         .LE(load_B),
-        .OE_n(~b_to_bus),          // Output to bus when b_to_bus is high (active low OE_n)
-        .Q(B_Q),                    // Output to bus
+        .OE_n(~b_to_bus),           //  Output to bus when b_to_bus is high (active low OE_n)
+        .Q(B_Q),                    //  Output to bus
         .to_alu(B_to_alu)
     );
 
@@ -71,8 +70,8 @@ module ssem
         .A(A_to_alu),
         .B(B_to_alu),
         .SUB(alu_sub),
-        .LE(alu_latch),            // Latch enable for ALU result
-        .OE_n(~alu_to_bus),        // Output to bus when alu_to_bus is high (active low OE_n)
+        .LE(alu_latch),            //  Latch enable for ALU result
+        .OE_n(~alu_to_bus),        //  Output to bus when alu_to_bus is high (active low OE_n)
         .RESULT(alu_result)
     );
 
