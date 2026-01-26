@@ -16,7 +16,6 @@
 //    - a_to_bus: Output register A to the bus
 //    - b_to_bus: Output register B to the bus
 //    - alu_sub: ALU subtract control (0=add, 1=subtract)
-//    - alu_latch: ALU latch enable (active high, latches result)
 //    - alu_to_bus: ALU output to the bus
 // - The bus is an inout bus
 //
@@ -29,7 +28,6 @@ module ssem
     input wire a_to_bus,            //  Output register A to the bus
     input wire b_to_bus,            //  Output register B to the bus
     input wire alu_sub,             //  ALU subtract control (0=add, 1=subtract)
-    input wire alu_latch,           //  ALU latch enable (active high)
     input wire alu_to_bus,          //  ALU output to the bus
     inout wire [31:0] bus           //  32-bit bidirectional bus
 );
@@ -70,7 +68,6 @@ module ssem
         .A(A_to_alu),
         .B(B_to_alu),
         .SUB(alu_sub),
-        .LE(alu_latch),            //  Latch enable for ALU result
         .OE_n(~alu_to_bus),        //  Output to bus when alu_to_bus is high (active low OE_n)
         .RESULT(alu_result)
     );

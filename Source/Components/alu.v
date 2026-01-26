@@ -4,16 +4,14 @@
 //  The ALU is 32-bits wide and has the following features:
 //  - Two 32-bit inputs: A and B
 //  - One 1-bit control input: SUB (0 for addition, 1 for subtraction)
-//  - One 1-bit latch enable input: LE (active high, latches result when high)
 //  - One 32-bit output: RESULT
 //  - One 1-bit control signal that indicates if the RESULT should be output or should be High-Z
 //  - The ALU will continuously compute the result based on the current inputs and control signals.
-//  - Results are latched into the output registers when LE is high.
 //
 //  The ALU is implemented using the following logic gates:
 //  - 74LS283 for addition
 //  - 74LS86 to convert the B input to its two's complement for subtraction using the SUB control signal.
-//  - 74LS373 to latch and control the output state (RESULT or High-Z) based on the latch enable and output enable signals.
+//  - 74LS245 to control the output state (RESULT or High-Z) based on the output enable signal.
 //
 //  Note that we do not have a propagation delay here as the delays are built into the individual components.
 //
@@ -22,7 +20,6 @@ module alu
     input wire [31:0] A,        // 32-bit input A.
     input wire [31:0] B,        // 32-bit input B.
     input wire SUB,             // Subtract control: 0 = add, 1 = subtract.
-    input wire LE,              // Latch Enable (active high): latches the computed result when high.
     input wire OE_n,            // Output enable (active low): outputs RESULT when low, High-Z when high.
     output wire [31:0] RESULT   // 32-bit result output.
 );
@@ -93,14 +90,23 @@ module alu
     ttl283_adder adder7 (.A(A[31:28]), .B(B_XORed[31:28]), .C0(carry[6]), .S(adder_result[31:28]), .C4(carry[7]));
 
     //
-    //  Output control using 74LS373 (four 8-bit latches for 32-bit output).
-    //      - D inputs are connected to the adder result.
-    //      - LE (Latch Enable) input controls when the result is latched (transparent when high).
+    //  Output control using 74LS245 (four 8-bit transceivers for 32-bit output).
+    //      - DIR = 1 for A to B direction (adder_result to RESULT).
     //      - OE_n controls tri-state: low = output enabled, high = High-Z.
     //
-    ttl373_latch output_buf0 (.D(adder_result[7:0]),   .LE(LE), .OE_n(OE_n), .Q(RESULT[7:0]));
-    ttl373_latch output_buf1 (.D(adder_result[15:8]),  .LE(LE), .OE_n(OE_n), .Q(RESULT[15:8]));
-    ttl373_latch output_buf2 (.D(adder_result[23:16]), .LE(LE), .OE_n(OE_n), .Q(RESULT[23:16]));
-    ttl373_latch output_buf3 (.D(adder_result[31:24]), .LE(LE), .OE_n(OE_n), .Q(RESULT[31:24]));
+    wire [31:0] temp_unused;    // Unused A port of the 74LS245.
+    
+    ttl245_transceiver output_buf0 (.A(temp_unused[7:0]),   .B(RESULT[7:0]),   .DIR(1'b1), .OE_n(OE_n));
+    ttl245_transceiver output_buf1 (.A(temp_unused[15:8]),  .B(RESULT[15:8]),  .DIR(1'b1), .OE_n(OE_n));
+    ttl245_transceiver output_buf2 (.A(temp_unused[23:16]), .B(RESULT[23:16]), .DIR(1'b1), .OE_n(OE_n));
+    ttl245_transceiver output_buf3 (.A(temp_unused[31:24]), .B(RESULT[31:24]), .DIR(1'b1), .OE_n(OE_n));
+
+    //
+    //  Drive the A ports of the 74LS245 with the adder result.
+    //
+    assign temp_unused[7:0]   = adder_result[7:0];
+    assign temp_unused[15:8]  = adder_result[15:8];
+    assign temp_unused[23:16] = adder_result[23:16];
+    assign temp_unused[31:24] = adder_result[31:24];
 
 endmodule
