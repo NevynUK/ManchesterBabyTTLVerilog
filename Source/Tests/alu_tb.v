@@ -7,7 +7,6 @@ module alu_tb();
     reg [31:0] A;
     reg [31:0] B;
     reg SUB;
-    reg LE;
     reg OE_n;
     wire [31:0] RESULT;
 
@@ -18,7 +17,6 @@ module alu_tb();
         .A(A),
         .B(B),
         .SUB(SUB),
-        .LE(LE),
         .OE_n(OE_n),
         .RESULT(RESULT)
     );
@@ -38,7 +36,6 @@ module alu_tb();
         A = 32'h00000000;
         B = 32'h00000000;
         SUB = 1'b0;
-        LE = 1'b0;
         OE_n = 1'b1;                        //  Output disabled initially.
         #PROPAGATION_DELAY;
 
@@ -48,9 +45,6 @@ module alu_tb();
         A = 32'h00000005;
         B = 32'h00000003;
         SUB = 1'b0;
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;                          //  Latch operation complete.
         OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000008)
@@ -61,14 +55,9 @@ module alu_tb();
         //
         //  Test 2: Subtraction (10 - 4 = 6).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h0000000A;
         B = 32'h00000004;
         SUB = 1'b1;                         //  Subtraction, SUB = 1.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000006)
         begin
@@ -78,14 +67,9 @@ module alu_tb();
         //
         //  Test 3: Addition with larger numbers (1000 + 2000 = 3000).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h000003E8;                   //  1000 decimal
         B = 32'h000007D0;                   //  2000 decimal
         SUB = 1'b0;                         //  Addition, SUB = 0.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000BB8)        //  3000 decimal
         begin
@@ -95,14 +79,9 @@ module alu_tb();
         //
         //  Test 4: Subtraction resulting in zero (100 - 100 = 0).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h00000064;                   //  100 decimal
         B = 32'h00000064;                   //  100 decimal
         SUB = 1'b1;                         //  Subtraction, SUB = 1.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000000)
         begin
@@ -112,14 +91,9 @@ module alu_tb();
         //
         //  Test 5: Addition with carry propagation (0xFFFFFFFF + 1 = 0x00000000 with overflow).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'hFFFFFFFF;
         B = 32'h00000001;
         SUB = 1'b0;
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000000)
         begin
@@ -129,14 +103,9 @@ module alu_tb();
         //
         //  Test 6: Subtraction with borrow (5 - 10 = -5, 0xFFFFFFFB in two's complement).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h00000005;
         B = 32'h0000000A;
         SUB = 1'b1;
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'hFFFFFFFB)
         begin
@@ -149,9 +118,6 @@ module alu_tb();
         A = 32'h12345678;
         B = 32'h87654321;
         SUB = 1'b0;
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
         OE_n = 1'b1;                        //  Disable output (should be High-Z).
         #PROPAGATION_DELAY;
         if (RESULT !== 32'hzzzzzzzz)
@@ -172,14 +138,9 @@ module alu_tb();
         //
         //  Test 9: Large subtraction (0xFFFFFFFF - 1 = 0xFFFFFFFE).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'hFFFFFFFF;
         B = 32'h00000001;
         SUB = 1'b1;                         //  Subtraction, SUB = 1.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'hFFFFFFFE)
         begin
@@ -189,14 +150,9 @@ module alu_tb();
         //
         //  Test 10: Zero addition (0 + 0 = 0).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h00000000;
         B = 32'h00000000;
         SUB = 1'b0;                         //  Addition, SUB = 0.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000000)
         begin
@@ -206,14 +162,9 @@ module alu_tb();
         //
         //  Test 11: Maximum positive addition (0x7FFFFFFF + 1 = 0x80000000).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h7FFFFFFF;
         B = 32'h00000001;
         SUB = 1'b0;                         //  Addition, SUB = 0.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h80000000)
         begin
@@ -221,38 +172,27 @@ module alu_tb();
         end
 
         //
-        //  Test 12: Continuous computation (change inputs, latch separately).
+        //  Test 12: Continuous computation (change inputs, result updates immediately).
         //
-        OE_n = 1'b1;                        //  Disable output.
         A = 32'h00000100;
         B = 32'h00000200;
         SUB = 1'b0;                         //  Addition, SUB = 0.
-        LE = 1'b1;                          //  Latch the result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00000300)
         begin
             $error("ERROR: Test 12a - Initial computation failed. Expected 0x00000300, got 0x%08h", RESULT);
         end
         
-        // Change inputs and latch new result.
-        OE_n = 1'b1;                        //  Disable output.
+        //  Change inputs, result should update immediately.
         A = 32'h00001000;
         B = 32'h00000500;
-        SUB = 1'b0;                         //  Addition, SUB = 0.
-        LE = 1'b1;                          //  Latch the new result.
-        #PROPAGATION_DELAY;
-        LE = 1'b0;
-        OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
         if (RESULT !== 32'h00001500)
         begin
             $error("ERROR: Test 12b - Continuous computation failed. Expected 0x00001500, got 0x%08h", RESULT);
         end
 
-        $display("ALU - End of Simulation");
+        $display("ALU - End of Tests / Simulation");
         $finish;
     end
 
