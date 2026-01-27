@@ -6,6 +6,7 @@
         "localparam",
         "negedge",
         "posedge",
+        "SSEM",
         "storelines"
     ]
 }
