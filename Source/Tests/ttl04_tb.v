@@ -116,10 +116,7 @@ module ttl04_tb();
         A5 = 1'b1;
         A6 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b0 || Y2 !== 1'b1 || Y3 !== 1'b0 || Y4 !== 1'b1 || Y5 !== 1'b0 || Y6 !== 1'b1)
-        begin
-            $error("ERROR: Simultaneous test failed. Expected Y1=0, Y2=1, Y3=0, Y4=1, Y5=0, Y6=1, got Y1=%b, Y2=%b, Y3=%b, Y4=%b, Y5=%b, Y6=%b", Y1, Y2, Y3, Y4, Y5, Y6);
-        end
+        `ABORT_IF(Y1 !== 1'b0 || Y2 !== 1'b1 || Y3 !== 1'b0 || Y4 !== 1'b1 || Y5 !== 1'b0 || Y6 !== 1'b1, $sformatf("Simultaneous test: failed. Expected Y1=0, Y2=1, Y3=0, Y4=1, Y5=0, Y6=1, got Y1=%b, Y2=%b, Y3=%b, Y4=%b, Y5=%b, Y6=%b", Y1, Y2, Y3, Y4, Y5, Y6))
 
         $display("7404 - End of Simulation");
         $finish;
