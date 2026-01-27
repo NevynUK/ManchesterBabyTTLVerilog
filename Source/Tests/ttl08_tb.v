@@ -60,93 +60,57 @@ module ttl08_tb();
         //
         A2 = 1'b0; B2 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y2 !== 1'b0)
-        begin
-            $error("ERROR: Gate 2 - Test 0 AND 0 failed. Expected Y2=0, got Y2=%b", Y2);
-        end
+        `ABORT_IF(Y2 !== 1'b0, $sformatf("Gate 2: Test 0 AND 0 failed. Expected Y2=0, got Y2=%b", Y2))
 
         A2 = 1'b0; B2 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y2 !== 1'b0)
-        begin
-            $error("ERROR: Gate 2 - Test 0 AND 1 failed. Expected Y2=0, got Y2=%b", Y2);
-        end
+        `ABORT_IF(Y2 !== 1'b0, $sformatf("Gate 2: Test 0 AND 1 failed. Expected Y2=0, got Y2=%b", Y2))
 
         A2 = 1'b1; B2 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y2 !== 1'b0)
-        begin
-            $error("ERROR: Gate 2 - Test 1 AND 0 failed. Expected Y2=0, got Y2=%b", Y2);
-        end
+        `ABORT_IF(Y2 !== 1'b0, $sformatf("Gate 2: Test 1 AND 0 failed. Expected Y2=0, got Y2=%b", Y2))
 
         A2 = 1'b1; B2 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y2 !== 1'b1)
-        begin
-            $error("ERROR: Gate 2 - Test 1 AND 1 failed. Expected Y2=1, got Y2=%b", Y2);
-        end
+        `ABORT_IF(Y2 !== 1'b1, $sformatf("Gate 2: Test 1 AND 1 failed. Expected Y2=1, got Y2=%b", Y2))
 
         //
         //  Test Gate 3: All input combinations.
         //
         A3 = 1'b0; B3 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y3 !== 1'b0)
-        begin
-            $error("ERROR: Gate 3 - Test 0 AND 0 failed. Expected Y3=0, got Y3=%b", Y3);
-        end
+        `ABORT_IF(Y3 !== 1'b0, $sformatf("Gate 3: Test 0 AND 0 failed. Expected Y3=0, got Y3=%b", Y3))
 
         A3 = 1'b0; B3 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y3 !== 1'b0)
-        begin
-            $error("ERROR: Gate 3 - Test 0 AND 1 failed. Expected Y3=0, got Y3=%b", Y3);
-        end
+        `ABORT_IF(Y3 !== 1'b0, $sformatf("Gate 3: Test 0 AND 1 failed. Expected Y3=0, got Y3=%b", Y3))
 
         A3 = 1'b1; B3 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y3 !== 1'b0)
-        begin
-            $error("ERROR: Gate 3 - Test 1 AND 0 failed. Expected Y3=0, got Y3=%b", Y3);
-        end
+        `ABORT_IF(Y3 !== 1'b0, $sformatf("Gate 3: Test 1 AND 0 failed. Expected Y3=0, got Y3=%b", Y3))
 
         A3 = 1'b1; B3 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y3 !== 1'b1)
-        begin
-            $error("ERROR: Gate 3 - Test 1 AND 1 failed. Expected Y3=1, got Y3=%b", Y3);
-        end
+        `ABORT_IF(Y3 !== 1'b1, $sformatf("Gate 3: Test 1 AND 1 failed. Expected Y3=1, got Y3=%b", Y3))
 
         //
         //  Test Gate 4: All input combinations.
         //
         A4 = 1'b0; B4 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y4 !== 1'b0)
-        begin
-            $error("ERROR: Gate 4 - Test 0 AND 0 failed. Expected Y4=0, got Y4=%b", Y4);
-        end
+        `ABORT_IF(Y4 !== 1'b0, $sformatf("Gate 4: Test 0 AND 0 failed. Expected Y4=0, got Y4=%b", Y4))
 
         A4 = 1'b0; B4 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y4 !== 1'b0)
-        begin
-            $error("ERROR: Gate 4 - Test 0 AND 1 failed. Expected Y4=0, got Y4=%b", Y4);
-        end
+        `ABORT_IF(Y4 !== 1'b0, $sformatf("Gate 4: Test 0 AND 1 failed. Expected Y4=0, got Y4=%b", Y4))
 
         A4 = 1'b1; B4 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y4 !== 1'b0)
-        begin
-            $error("ERROR: Gate 4 - Test 1 AND 0 failed. Expected Y4=0, got Y4=%b", Y4);
-        end
+        `ABORT_IF(Y4 !== 1'b0, $sformatf("Gate 4: Test 1 AND 0 failed. Expected Y4=0, got Y4=%b", Y4))
 
         A4 = 1'b1; B4 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y4 !== 1'b1)
-        begin
-            $error("ERROR: Gate 4 - Test 1 AND 1 failed. Expected Y4=1, got Y4=%b", Y4);
-        end
+        `ABORT_IF(Y4 !== 1'b1, $sformatf("Gate 4: Test 1 AND 1 failed. Expected Y4=1, got Y4=%b", Y4))
 
         //
         //  Test all gates simultaneously with different values.

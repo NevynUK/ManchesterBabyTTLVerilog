@@ -2,6 +2,7 @@
 //  Test the implementation of the 74LS86 quad 2-input XOR gate.
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module ttl86_tb();
     reg A1, B1, A2, B2, A3, B3, A4, B4;
