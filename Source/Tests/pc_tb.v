@@ -2,6 +2,7 @@
 //  Test the implementation of the Program Counter (PC).
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module pc_tb();
     reg [31:0] A;
@@ -47,10 +48,7 @@ module pc_tb();
         LOAD_n = 1'b0;      // Enable load.
         OE_n = 1'b0;        // Enable output.
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000000)
-        begin
-            $error("ERROR: Test 1 - Load initial value failed. Expected 0x00000000, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000000, $sformatf("Test 1: Load initial value failed. Expected 0x00000000, got 0x%08h", Q))
 
         //
         //  Test 2: Count up from 0.
@@ -60,10 +58,7 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000001)
-        begin
-            $error("ERROR: Test 2 - First increment failed. Expected 0x00000001, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000001, $sformatf("Test 2: First increment failed. Expected 0x00000001, got 0x%08h", Q))
 
         //
         //  Test 3: Continue counting.
@@ -72,19 +67,13 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000002)
-        begin
-            $error("ERROR: Test 3 - Second increment failed. Expected 0x00000002, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000002, $sformatf("Test 3: Second increment failed. Expected 0x00000002, got 0x%08h", Q))
 
         CLK = 1'b1;         // Rising edge.
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000003)
-        begin
-            $error("ERROR: Test 3b - Third increment failed. Expected 0x00000003, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000003, $sformatf("Test 3b: Third increment failed. Expected 0x00000003, got 0x%08h", Q))
 
         //
         //  Test 4: Load a new value while counting.
@@ -95,10 +84,7 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000010)
-        begin
-            $error("ERROR: Test 4 - Load new value failed. Expected 0x00000010, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000010, $sformatf("Test 4: Load new value failed. Expected 0x00000010, got 0x%08h", Q))
 
         //
         //  Test 5: Resume counting from loaded value.
@@ -108,20 +94,14 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000011)
-        begin
-            $error("ERROR: Test 5 - Count from loaded value failed. Expected 0x00000011, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000011, $sformatf("Test 5: Count from loaded value failed. Expected 0x00000011, got 0x%08h", Q))
 
         //
         //  Test 6: Output disable (High-Z).
         //
         OE_n = 1'b1;        // Disable output.
         #PROPAGATION_DELAY;
-        if (Q !== 32'hzzzzzzzz)
-        begin
-            $error("ERROR: Test 6 - Output disable failed. Expected High-Z, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'hzzzzzzzz, $sformatf("Test 6: Output disable failed. Expected High-Z, got 0x%08h", Q))
 
         //
         //  Test 7: Counter continues even with output disabled.
@@ -132,10 +112,7 @@ module pc_tb();
         #PROPAGATION_DELAY;
         OE_n = 1'b0;        // Re-enable output.
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000012)
-        begin
-            $error("ERROR: Test 7 - Counter continued during output disable failed. Expected 0x00000012, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000012, $sformatf("Test 7: Counter continued during output disable failed. Expected 0x00000012, got 0x%08h", Q))
 
         //
         //  Test 8: Test 4-bit boundary crossing (0x0F to 0x10).
@@ -146,29 +123,20 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h0000000E)
-        begin
-            $error("ERROR: Test 8a - Load 0x0E failed. Expected 0x0000000E, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h0000000E, $sformatf("Test 8a: Load 0x0E failed. Expected 0x0000000E, got 0x%08h", Q))
 
         LOAD_n = 1'b1;
         CLK = 1'b1;         // Rising edge.
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h0000000F)
-        begin
-            $error("ERROR: Test 8b - Increment to 0x0F failed. Expected 0x0000000F, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h0000000F, $sformatf("Test 8b: Increment to 0x0F failed. Expected 0x0000000F, got 0x%08h", Q))
 
         CLK = 1'b1;         // Rising edge.
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000010)
-        begin
-            $error("ERROR: Test 8c - 4-bit boundary crossing failed. Expected 0x00000010, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000010, $sformatf("Test 8c: 4-bit boundary crossing failed. Expected 0x00000010, got 0x%08h", Q))
 
         //
         //  Test 9: Test 8-bit boundary crossing (0xFF to 0x100).
@@ -185,19 +153,13 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h000000FF)
-        begin
-            $error("ERROR: Test 9a - Increment to 0xFF failed. Expected 0x000000FF, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h000000FF, $sformatf("Test 9a: Increment to 0xFF failed. Expected 0x000000FF, got 0x%08h", Q))
 
         CLK = 1'b1;         // Rising edge.
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000100)
-        begin
-            $error("ERROR: Test 9b - 8-bit boundary crossing failed. Expected 0x00000100, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000100, $sformatf("Test 9b: 8-bit boundary crossing failed. Expected 0x00000100, got 0x%08h", Q))
 
         //
         //  Test 10: Test 16-bit boundary crossing (0xFFFF to 0x10000).
@@ -214,19 +176,13 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h0000FFFF)
-        begin
-            $error("ERROR: Test 10a - Increment to 0xFFFF failed. Expected 0x0000FFFF, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h0000FFFF, $sformatf("Test 10a: Increment to 0xFFFF failed. Expected 0x0000FFFF, got 0x%08h", Q))
 
         CLK = 1'b1;         // Rising edge.
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00010000)
-        begin
-            $error("ERROR: Test 10b - 16-bit boundary crossing failed. Expected 0x00010000, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00010000, $sformatf("Test 10b: 16-bit boundary crossing failed. Expected 0x00010000, got 0x%08h", Q))
 
         //
         //  Test 11: Test 32-bit overflow (0xFFFFFFFF to 0x00000000).
@@ -243,19 +199,13 @@ module pc_tb();
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'hFFFFFFFF)
-        begin
-            $error("ERROR: Test 11a - Increment to 0xFFFFFFFF failed. Expected 0xFFFFFFFF, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'hFFFFFFFF, $sformatf("Test 11a: Increment to 0xFFFFFFFF failed. Expected 0xFFFFFFFF, got 0x%08h", Q))
 
         CLK = 1'b1;         // Rising edge.
         #CLK_PERIOD;
         CLK = 1'b0;
         #PROPAGATION_DELAY;
-        if (Q !== 32'h00000000)
-        begin
-            $error("ERROR: Test 11b - 32-bit overflow failed. Expected 0x00000000, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h00000000, $sformatf("Test 11b: 32-bit overflow failed. Expected 0x00000000, got 0x%08h", Q))
 
         //
         //  Test 12: Multiple rapid increments.
@@ -276,10 +226,7 @@ module pc_tb();
             #CLK_PERIOD;
         end
         #PROPAGATION_DELAY;
-        if (Q !== 32'h0000010A)
-        begin
-            $error("ERROR: Test 12 - Multiple increments failed. Expected 0x0000010A, got 0x%08h", Q);
-        end
+        `ABORT_IF(Q !== 32'h0000010A, $sformatf("Test 12: Multiple increments failed. Expected 0x0000010A, got 0x%08h", Q))
 
         $display("PC - End of Simulation");
         #100;

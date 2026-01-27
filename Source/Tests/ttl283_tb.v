@@ -2,6 +2,7 @@
 //  Test the implementation of the 74LS83 4-bit binary full adder.
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module ttl283_tb();
     reg [3:0] A;            // 4-bit input A.
@@ -46,10 +47,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b00000;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 1 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 1: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 2: Addition with no carry out (5 + 3 + 0 = 8).
@@ -59,10 +57,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b01000;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 2 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 2: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 3: Addition with carry in (7 + 6 + 1 = 14).
@@ -72,10 +67,7 @@ module ttl283_tb();
         C0 = 1'b1;
         expected = 5'b01110;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 3 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 3: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 4: Addition with carry out (8 + 8 + 0 = 16, result = 0 with C4=1).
@@ -85,10 +77,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b10000;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 4 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 4: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 5: Maximum values (15 + 15 + 0 = 30, result = 14 with C4=1).
@@ -98,10 +87,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b11110;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 5 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 5: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 6: Maximum values with carry in (15 + 15 + 1 = 31, result = 15 with C4=1).
@@ -111,10 +97,7 @@ module ttl283_tb();
         C0 = 1'b1;
         expected = 5'b11111;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 6 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 6: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 7: Random test case 1 (9 + 4 + 0 = 13).
@@ -124,10 +107,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b01101;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 7 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 7: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 8: Random test case 2 (12 + 7 + 1 = 20, result = 4 with C4=1).
@@ -137,10 +117,7 @@ module ttl283_tb();
         C0 = 1'b1;
         expected = 5'b10100;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 8 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 8: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 9: Carry in only (0 + 0 + 1 = 1).
@@ -150,10 +127,7 @@ module ttl283_tb();
         C0 = 1'b1;
         expected = 5'b00001;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 9 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 9: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 10: All ones in A (15 + 0 + 0 = 15).
@@ -163,10 +137,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b01111;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 10 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 10: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 11: All ones in B (0 + 15 + 0 = 15).
@@ -176,10 +147,7 @@ module ttl283_tb();
         C0 = 1'b0;
         expected = 5'b01111;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 11 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 11: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         //
         // Test 12: Pattern test (10 + 5 + 1 = 16, result = 0 with C4=1).
@@ -189,10 +157,7 @@ module ttl283_tb();
         C0 = 1'b1;
         expected = 5'b10000;
         #PROPAGATION_DELAY;
-        if ({C4, S} !== expected)
-        begin
-            $error("ERROR: Test 12 failed. A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S);
-        end
+        `ABORT_IF({C4, S} !== expected, $sformatf("Test 12: A=%b, B=%b, C0=%b, Expected=%b, Got=%b%b", A, B, C0, expected, C4, S))
 
         #(PROPAGATION_DELAY * 2);
         $display("74LS283 - End of Simulation.");

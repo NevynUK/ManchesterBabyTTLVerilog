@@ -2,6 +2,7 @@
 //  Test the implementation of the ALU (Arithmetic Logic Unit).
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module alu_tb();
     reg [31:0] A;
@@ -47,10 +48,7 @@ module alu_tb();
         SUB = 1'b0;
         OE_n = 1'b0;                        //  Enable output.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000008)
-        begin
-            $error("ERROR: Test 1 - Addition 5 + 3 failed. Expected 0x00000008, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000008, $sformatf("Test 1: Addition 5 + 3 failed. Expected 0x00000008, got 0x%08h", RESULT))
 
         //
         //  Test 2: Subtraction (10 - 4 = 6).
@@ -59,10 +57,7 @@ module alu_tb();
         B = 32'h00000004;
         SUB = 1'b1;                         //  Subtraction, SUB = 1.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000006)
-        begin
-            $error("ERROR: Test 2 - Subtraction 10 - 4 failed. Expected 0x00000006, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000006, $sformatf("Test 2: Subtraction 10 - 4 failed. Expected 0x00000006, got 0x%08h", RESULT))
 
         //
         //  Test 3: Addition with larger numbers (1000 + 2000 = 3000).
@@ -71,10 +66,7 @@ module alu_tb();
         B = 32'h000007D0;                   //  2000 decimal
         SUB = 1'b0;                         //  Addition, SUB = 0.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000BB8)        //  3000 decimal
-        begin
-            $error("ERROR: Test 3 - Addition 1000 + 2000 failed. Expected 0x00000BB8, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000BB8, $sformatf("Test 3: Addition 1000 + 2000 failed. Expected 0x00000BB8, got 0x%08h", RESULT))        //  3000 decimal
 
         //
         //  Test 4: Subtraction resulting in zero (100 - 100 = 0).
@@ -83,10 +75,7 @@ module alu_tb();
         B = 32'h00000064;                   //  100 decimal
         SUB = 1'b1;                         //  Subtraction, SUB = 1.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000000)
-        begin
-            $error("ERROR: Test 4 - Subtraction 100 - 100 failed. Expected 0x00000000, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000000, $sformatf("Test 4: Subtraction 100 - 100 failed. Expected 0x00000000, got 0x%08h", RESULT))
 
         //
         //  Test 5: Addition with carry propagation (0xFFFFFFFF + 1 = 0x00000000 with overflow).
@@ -95,10 +84,7 @@ module alu_tb();
         B = 32'h00000001;
         SUB = 1'b0;
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000000)
-        begin
-            $error("ERROR: Test 5 - Addition with overflow failed. Expected 0x00000000, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000000, $sformatf("Test 5: Addition with overflow failed. Expected 0x00000000, got 0x%08h", RESULT))
 
         //
         //  Test 6: Subtraction with borrow (5 - 10 = -5, 0xFFFFFFFB in two's complement).
@@ -107,10 +93,7 @@ module alu_tb();
         B = 32'h0000000A;
         SUB = 1'b1;
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'hFFFFFFFB)
-        begin
-            $error("ERROR: Test 6 - Subtraction with negative result failed. Expected 0xFFFFFFFB, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'hFFFFFFFB, $sformatf("Test 6: Subtraction with negative result failed. Expected 0xFFFFFFFB, got 0x%08h", RESULT))
 
         //
         //  Test 7: Output enable control (High-Z state).
@@ -120,20 +103,14 @@ module alu_tb();
         SUB = 1'b0;
         OE_n = 1'b1;                        //  Disable output (should be High-Z).
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'hzzzzzzzz)
-        begin
-            $error("ERROR: Test 7 - Output disable failed. Expected High-Z, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'hzzzzzzzz, $sformatf("Test 7: Output disable failed. Expected High-Z, got 0x%08h", RESULT))
 
         //
         //  Test 8: Re-enable output.
         //
         OE_n = 1'b0;                        //  Re-enable output.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h99999999)        //  0x12345678 + 0x87654321 = 0x99999999
-        begin
-            $error("ERROR: Test 8 - Output re-enable failed. Expected 0x99999999, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h99999999, $sformatf("Test 8: Output re-enable failed. Expected 0x99999999, got 0x%08h", RESULT))        //  0x12345678 + 0x87654321 = 0x99999999
 
         //
         //  Test 9: Large subtraction (0xFFFFFFFF - 1 = 0xFFFFFFFE).
@@ -142,10 +119,7 @@ module alu_tb();
         B = 32'h00000001;
         SUB = 1'b1;                         //  Subtraction, SUB = 1.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'hFFFFFFFE)
-        begin
-            $error("ERROR: Test 9 - Large subtraction failed. Expected 0xFFFFFFFE, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'hFFFFFFFE, $sformatf("Test 9: Large subtraction failed. Expected 0xFFFFFFFE, got 0x%08h", RESULT))
 
         //
         //  Test 10: Zero addition (0 + 0 = 0).
@@ -154,10 +128,7 @@ module alu_tb();
         B = 32'h00000000;
         SUB = 1'b0;                         //  Addition, SUB = 0.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000000)
-        begin
-            $error("ERROR: Test 10 - Zero addition failed. Expected 0x00000000, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000000, $sformatf("Test 10: Zero addition failed. Expected 0x00000000, got 0x%08h", RESULT))
 
         //
         //  Test 11: Maximum positive addition (0x7FFFFFFF + 1 = 0x80000000).
@@ -166,10 +137,7 @@ module alu_tb();
         B = 32'h00000001;
         SUB = 1'b0;                         //  Addition, SUB = 0.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h80000000)
-        begin
-            $error("ERROR: Test 11 - Maximum positive addition failed. Expected 0x80000000, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h80000000, $sformatf("Test 11: Maximum positive addition failed. Expected 0x80000000, got 0x%08h", RESULT))
 
         //
         //  Test 12: Continuous computation (change inputs, result updates immediately).
@@ -178,19 +146,13 @@ module alu_tb();
         B = 32'h00000200;
         SUB = 1'b0;                         //  Addition, SUB = 0.
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00000300)
-        begin
-            $error("ERROR: Test 12a - Initial computation failed. Expected 0x00000300, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00000300, $sformatf("Test 12a: Initial computation failed. Expected 0x00000300, got 0x%08h", RESULT))
         
         //  Change inputs, result should update immediately.
         A = 32'h00001000;
         B = 32'h00000500;
         #PROPAGATION_DELAY;
-        if (RESULT !== 32'h00001500)
-        begin
-            $error("ERROR: Test 12b - Continuous computation failed. Expected 0x00001500, got 0x%08h", RESULT);
-        end
+        `ABORT_IF(RESULT !== 32'h00001500, $sformatf("Test 12b: Continuous computation failed. Expected 0x00001500, got 0x%08h", RESULT))
 
         $display("ALU - End of Tests / Simulation");
         $finish;

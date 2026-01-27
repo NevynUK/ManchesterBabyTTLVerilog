@@ -2,6 +2,7 @@
 //  Test the implementation of the 74LS08 quad 2-input AND gate.
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module ttl08_tb();
     reg A1, B1, A2, B2, A3, B3, A4, B4;
@@ -40,31 +41,19 @@ module ttl08_tb();
         //
         A1 = 1'b0; B1 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b0)
-        begin
-            $error("ERROR: Gate 1 - Test 0 AND 0 failed. Expected Y1=0, got Y1=%b", Y1);
-        end
+        `ABORT_IF(Y1 !== 1'b0, $sformatf("Gate 1: Test 0 AND 0 failed. Expected Y1=0, got Y1=%b", Y1))
 
         A1 = 1'b0; B1 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b0)
-        begin
-            $error("ERROR: Gate 1 - Test 0 AND 1 failed. Expected Y1=0, got Y1=%b", Y1);
-        end
+        `ABORT_IF(Y1 !== 1'b0, $sformatf("Gate 1: Test 0 AND 1 failed. Expected Y1=0, got Y1=%b", Y1))
 
         A1 = 1'b1; B1 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b0)
-        begin
-            $error("ERROR: Gate 1 - Test 1 AND 0 failed. Expected Y1=0, got Y1=%b", Y1);
-        end
+        `ABORT_IF(Y1 !== 1'b0, $sformatf("Gate 1: Test 1 AND 0 failed. Expected Y1=0, got Y1=%b", Y1))
 
         A1 = 1'b1; B1 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b1)
-        begin
-            $error("ERROR: Gate 1 - Test 1 AND 1 failed. Expected Y1=1, got Y1=%b", Y1);
-        end
+        `ABORT_IF(Y1 !== 1'b1, $sformatf("Gate 1: Test 1 AND 1 failed. Expected Y1=1, got Y1=%b", Y1))
 
         //
         //  Test Gate 2: All input combinations.

@@ -2,6 +2,7 @@
 //  Test the implementation of the 74LS245 octal bus transceiver.
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module ttl245_tb();
     reg [7:0] A_drive;
@@ -56,15 +57,11 @@ module ttl245_tb();
         B_enable = 1'b0;         // Release B bus (will be driven by chip).
         A_drive = 8'b10101010;   // Drive A with test pattern.
         #PROPAGATION_DELAY
-        if (B != A_drive) begin
-            $error("Error: Test 1a, B bus did not match expected value.");
-        end
+        `ABORT_IF(B != A_drive, "Test 1a: B bus did not match expected value.")
         
         A_drive = 8'b11110000;   // Change A bus data.
         #PROPAGATION_DELAY;
-        if (B != A_drive) begin
-            $error("Error: Test 1b, B bus did not match expected value.");
-        end
+        `ABORT_IF(B != A_drive, "Test 1b: B bus did not match expected value.")
         //
         //  Test 2: B to A direction (DIR = 0).
         //
@@ -73,23 +70,17 @@ module ttl245_tb();
         B_enable = 1'b1;         // Drive B bus.
         B_drive = 8'b00111100;   // Drive B with test pattern.
         #PROPAGATION_DELAY
-        if (A != B_drive) begin
-            $error("Error: Test 2a, A bus did not match expected value.");
-        end
+        `ABORT_IF(A != B_drive, "Test 2a: A bus did not match expected value.")
         
         B_drive = 8'b01010101;   // Change B bus data.
         #PROPAGATION_DELAY
-        if (A != B_drive) begin
-            $error("Error: Test 2b, A bus did not match expected value.");
-        end
+        `ABORT_IF(A != B_drive, "Test 2b: A bus did not match expected value.")
         //
         //  Test 3: Output disabled (OE_n = 1).
         //
         OE_n = 1'b1;             // Disable output.
         #PROPAGATION_DELAY
-        if ((A !== 8'bz) && (B !== 8'bz)) begin
-            $error("Error: Test 3, Outputs should be high-impedance.");
-        end
+        `ABORT_IF((A !== 8'bz) && (B !== 8'bz), "Test 3: Outputs should be high-impedance.")
         //
         //  Test 4: Re-enable with A to B direction.
         //
@@ -99,9 +90,7 @@ module ttl245_tb();
         B_enable = 1'b0;         // Release B bus.
         A_drive = 8'b11001100;   // Drive A with test pattern.
         #PROPAGATION_DELAY
-        if (B != A_drive) begin
-            $error("Error: Test 4, B bus did not match expected value.");
-        end
+        `ABORT_IF(B != A_drive, "Test 4: B bus did not match expected value.")
 
         $display("74LS254 - End of Simulation");
         $finish;

@@ -2,6 +2,7 @@
 //  Test the implementation of the 7404 hex inverter.
 //
 `timescale 1 ns / 10 ps
+`include "Components/macros.v"
 
 module ttl04_tb();
     reg A1, A2, A3, A4, A5, A6;
@@ -44,102 +45,66 @@ module ttl04_tb();
         //
         A1 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b1)
-        begin
-            $error("ERROR: Gate 1 - Test NOT 0 failed. Expected Y1=1, got Y1=%b", Y1);
-        end
+        `ABORT_IF(Y1 !== 1'b1, $sformatf("Gate 1: Test NOT 0 failed. Expected Y1=1, got Y1=%b", Y1))
 
         A1 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y1 !== 1'b0)
-        begin
-            $error("ERROR: Gate 1 - Test NOT 1 failed. Expected Y1=0, got Y1=%b", Y1);
-        end
+        `ABORT_IF(Y1 !== 1'b0, $sformatf("Gate 1: Test NOT 1 failed. Expected Y1=0, got Y1=%b", Y1))
 
         //
         //  Test Gate 2: Both input values.
         //
         A2 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y2 !== 1'b1)
-        begin
-            $error("ERROR: Gate 2 - Test NOT 0 failed. Expected Y2=1, got Y2=%b", Y2);
-        end
+        `ABORT_IF(Y2 !== 1'b1, $sformatf("Gate 2: Test NOT 0 failed. Expected Y2=1, got Y2=%b", Y2))
 
         A2 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y2 !== 1'b0)
-        begin
-            $error("ERROR: Gate 2 - Test NOT 1 failed. Expected Y2=0, got Y2=%b", Y2);
-        end
+        `ABORT_IF(Y2 !== 1'b0, $sformatf("Gate 2: Test NOT 1 failed. Expected Y2=0, got Y2=%b", Y2))
 
         //
         //  Test Gate 3: Both input values.
         //
         A3 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y3 !== 1'b1)
-        begin
-            $error("ERROR: Gate 3 - Test NOT 0 failed. Expected Y3=1, got Y3=%b", Y3);
-        end
+        `ABORT_IF(Y3 !== 1'b1, $sformatf("Gate 3: Test NOT 0 failed. Expected Y3=1, got Y3=%b", Y3))
 
         A3 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y3 !== 1'b0)
-        begin
-            $error("ERROR: Gate 3 - Test NOT 1 failed. Expected Y3=0, got Y3=%b", Y3);
-        end
+        `ABORT_IF(Y3 !== 1'b0, $sformatf("Gate 3: Test NOT 1 failed. Expected Y3=0, got Y3=%b", Y3))
 
         //
         //  Test Gate 4: Both input values.
         //
         A4 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y4 !== 1'b1)
-        begin
-            $error("ERROR: Gate 4 - Test NOT 0 failed. Expected Y4=1, got Y4=%b", Y4);
-        end
+        `ABORT_IF(Y4 !== 1'b1, $sformatf("Gate 4: Test NOT 0 failed. Expected Y4=1, got Y4=%b", Y4))
 
         A4 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y4 !== 1'b0)
-        begin
-            $error("ERROR: Gate 4 - Test NOT 1 failed. Expected Y4=0, got Y4=%b", Y4);
-        end
+        `ABORT_IF(Y4 !== 1'b0, $sformatf("Gate 4: Test NOT 1 failed. Expected Y4=0, got Y4=%b", Y4))
 
         //
         //  Test Gate 5: Both input values.
         //
         A5 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y5 !== 1'b1)
-        begin
-            $error("ERROR: Gate 5 - Test NOT 0 failed. Expected Y5=1, got Y5=%b", Y5);
-        end
+        `ABORT_IF(Y5 !== 1'b1, $sformatf("Gate 5: Test NOT 0 failed. Expected Y5=1, got Y5=%b", Y5))
 
         A5 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y5 !== 1'b0)
-        begin
-            $error("ERROR: Gate 5 - Test NOT 1 failed. Expected Y5=0, got Y5=%b", Y5);
-        end
+        `ABORT_IF(Y5 !== 1'b0, $sformatf("Gate 5: Test NOT 1 failed. Expected Y5=0, got Y5=%b", Y5))
 
         //
         //  Test Gate 6: Both input values.
         //
         A6 = 1'b0;
         #PROPAGATION_DELAY;
-        if (Y6 !== 1'b1)
-        begin
-            $error("ERROR: Gate 6 - Test NOT 0 failed. Expected Y6=1, got Y6=%b", Y6);
-        end
+        `ABORT_IF(Y6 !== 1'b1, $sformatf("Gate 6: Test NOT 0 failed. Expected Y6=1, got Y6=%b", Y6))
 
         A6 = 1'b1;
         #PROPAGATION_DELAY;
-        if (Y6 !== 1'b0)
-        begin
-            $error("ERROR: Gate 6 - Test NOT 1 failed. Expected Y6=0, got Y6=%b", Y6);
-        end
+        `ABORT_IF(Y6 !== 1'b0, $sformatf("Gate 6: Test NOT 1 failed. Expected Y6=0, got Y6=%b", Y6))
 
         //
         //  Test all gates simultaneously with different values.
