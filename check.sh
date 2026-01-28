@@ -6,6 +6,8 @@
 set -e  # Exit on any error
 
 echo "Running apio tests..."
+
+cd Source
 apio test
 
 echo "All tests completed successfully!"
