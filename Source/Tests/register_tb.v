@@ -9,6 +9,7 @@ module register_tb();
     reg LE;
     reg OE_n;
     wire [31:0] Q;
+    wire [31:0] to_alu;
 
     //
     //  Instantiate the register module.
@@ -17,7 +18,8 @@ module register_tb();
         .A(A),
         .LE(LE),
         .OE_n(OE_n),
-        .Q(Q)
+        .Q(Q),
+        .to_alu(to_alu)
     );
 
     localparam PROPAGATION_DELAY = 50;      // Delay to allow for propagation with some overhead.
