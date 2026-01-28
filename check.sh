@@ -8,6 +8,11 @@ set -e  # Exit on any error
 echo "Running apio tests..."
 
 cd Source
-apio test
+
+# Run all test benches
+for test_file in Tests/*_tb.v; do
+    echo "Testing: $test_file"
+    apio test "$test_file"
+done
 
 echo "All tests completed successfully!"
