@@ -15,8 +15,8 @@ RUN wget https://github.com/FPGAwars/apio/releases/download/2026-01-28/apio-cli-
     dpkg -i ./apio-cli-linux-x86-64-20260128-debian.deb && \
     rm ./apio-cli-linux-x86-64-20260128-debian.deb
 
-# Install oss-cad-suite
-# RUN apio install oss-cad-suite
+# Install required packages
+RUN apio info system
 
 # Set working directory
 WORKDIR /workspace
