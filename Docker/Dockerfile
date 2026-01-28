@@ -12,6 +12,7 @@ RUN apt-get update && \
 
 # Install apio using pip
 RUN pip3 install apio
+RUN apio install oss-cad-suite
 
 # Set working directory
 WORKDIR /workspace
