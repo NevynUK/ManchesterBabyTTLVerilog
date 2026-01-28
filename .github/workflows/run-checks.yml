@@ -16,7 +16,7 @@ jobs:
       uses: actions/checkout@v4
     
     - name: Build Docker image
-      run: docker build -t manchester-baby-tests -f Docker/Dockerfile .
+      run: docker build -t manchester-baby-tests --platform=linux/amd64 -f Docker/Dockerfile .
     
     - name: Run tests in Docker container
       run: docker run --rm manchester-baby-tests
