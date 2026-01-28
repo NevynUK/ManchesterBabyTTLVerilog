@@ -12,6 +12,5 @@
 `define ABORT_IF(condition, message) \
     if (condition) \
     begin \
-        $display("ERROR: ", message); \
-        $finish; \
+        $error("ERROR: ", message); \
     end
